@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<!-- 
+{% if products is not None %} -->
+    <div class="alert alert-primary" role="alert">
+        "{{word}}"에 대한 상품명 및 브랜드명 검색 결과입니다.
+    </div>
+    <div class="row">
+        {% for ppp in products.all %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{% url 'detail' ppp.pid %}">{{ppp.pname}}</a>
+                </h4>
+                <h5>\{{ppp.price}}</h5>
+                <p class="card-text" style="margin:0;"> 
+                    <strong>{{ppp.category}}</strong> - {{ppp.brand}}<br>
+                    남은 재고: {{ppp.stock}}개<br>
+                    등록일자 {{ppp.pub_date}}
+                </p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+<!-- 
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">No data!</h4>
+        <p>"{{word}}"에 대한 검색 결과가 없습니다</p>
+        <hr>
+        <p class="mb-0">{{products}}</p>
+    </div>
+{% endif %} -->
+{% endblock %}

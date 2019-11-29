@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+
+<div class="form-group row">
+    <label for="sort-select" class="col-sm-1 col-form-label col-form-label-sm">정렬</label>
+    <select id="sort-select" onchange="location=this.value;" class="col-sm-6 form-control form-control-sm">
+        <option>정렬방식을 선택하세요</option>
+        <option class="sort-new" value="?sort=new">신제품순</option>
+        <option class="sort-cheap" value="?sort=cheap">낮은가격순</option>
+        <option class="sort-expen" value="?sort=expen">높은가격순</option>
+        <option class="sort-popular" value="?sort=popular">최다판매순</option>
+    </select>
+</div>
+<div class="row">
+    {% for ppp in products.all %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+        <div class="card-body">
+            <h4 class="card-title">
+            <a href="{% url 'detail' ppp.pid %}">{{ppp.pname}}</a>
+            </h4>
+            <h5>\{{ppp.price}}</h5>
+            <p class="card-text" style="margin:0;"> 
+                <strong>{{ppp.category}}</strong> - {{ppp.brand}}<br>
+                남은 재고: {{ppp.stock}}개<br>
+                판매 현황: {{ppp.stocksold}}개<br>
+                등록일자 {{ppp.pub_date}}
+            </p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+        </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

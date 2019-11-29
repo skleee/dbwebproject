@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <title>DBWebProject</title>
+</head>
+
+<body style="padding-top: 100px;">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">SHOPPINGMALL</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    {% if user.is_active %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Hi, <strong>{{user.username}}</strong>!!</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:{document.getElementById('logout').submit()}"><i class="fa fa-unlock"></i> Logout</a>
+                        <form id="logout" method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %} <input type="hidden" />
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}"><i class="fa fa-lock"></i> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'buyersignup' %}"><i class="fa fa-star"></i> Buyer_Signup</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sellersignup' %}"><i class="fa fa-star"></i> Seller_Signup</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}"><i class="fa fa-user"></i> My page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i> Cart</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container" id="pagecnt">
+        <div class="row">
+            <div class="col-lg-3">
+                <!-- Search -->
+                <div class="card my-3">
+                    <h5 class="card-header">검색</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}">
+                                <input class="form-control mr-sm-2" id="searchwind" name='searching' placeholder="제품/브랜드를 입력하세요" required>
+                                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <!-- Select Category -->
+                <table id="select-cat-brand">
+                    <tr>
+                        <td id="select-cat" onclick="left_list_change(this.id)">Category</td>
+                        <td id="select-brand" onclick="left_list_change(this.id)">Brand</td>
+                        <td id="select-price" style="color:#6c757d99;" onclick="left_list_change(this.id)">Price</td>
+                    </tr>
+                </table>
+                <div class="list-group" id="list-cat">
+                    <a href="{% url 'filter' f='category' select='fashion' %}" class="cat-item list-group-item">Fashion</a>
+                    <a href="{% url 'filter' f='category' select='beauty' %}" class="cat-item list-group-item">Beauty</a>
+                    <a href="{% url 'filter' f='category' select='digital' %}" class="cat-item list-group-item">Digital</a>             
+                </div>
+
+                <div class="list-group" id="list-brand" style="display:none">
+                    <a href="{% url 'filter' f='brand' select='nike' %}" class="brand-item list-group-item">Nike</a>
+                    <a href="{% url 'filter' f='brand' select='apple' %}" class="brand-item list-group-item">Apple</a>
+                    <a href="{% url 'filter' f='brand' select='samsung' %}" class="brand-item list-group-item">Samsung</a>
+                    <a href="{% url 'filter' f='brand' select='fila' %}" class="brand-item list-group-item">FILA</a>                                        
+                    <a href="{% url 'filter' f='brand' select='toms' %}" class="brand-item list-group-item">TOMS</a>
+                    <a href="{% url 'filter' f='brand' select='hera' %}" class="brand-item list-group-item">HERA</a>
+                    <a href="{% url 'filter' f='brand' select='vdl' %}" class="brand-item list-group-item">VDL</a>
+                </div>
+                <div class="list-group" id="list-price" style="display:none">
+                    <a href="{% url 'filter' f='price' select='10000' %}" class="price-item list-group-item">~ 10,000원</a>
+                    <a href="{% url 'filter' f='price' select='50000' %}" class="price-item list-group-item">10,000원 ~ 50,000원</a>
+                    <a href="{% url 'filter' f='price' select='100000' %}" class="price-item list-group-item">50,000원 ~ 100,000원</a>
+                    <a href="{% url 'filter' f='price' select='over' %}" class="price-item list-group-item">100,000원 ~</a>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="container">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="p-3 mt-2 mb-2 border border-success text-success rounded text-center">{{ message }} </div>
+                            {% else %}
+                                <div class="p-3 mt-2 mb-2 border border-danger text-danger rounded text-center ">{{ message }} </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {% block content %} {% endblock %}             
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <footer class="py-5 bg-dark">
+        <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; DB WEB Project 2019 by SK</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+    // 왼쪽 카테고리 정렬
+    function left_list_change(id) {
+        if (id == "select-cat") {
+            document.getElementById("select-cat").style.color = 'black';
+            document.getElementById("select-brand").style.color = '#6c757d99';
+            document.getElementById("select-price").style.color = '#6c757d99';
+
+            document.getElementById("list-brand").style.display = 'none';
+            document.getElementById("list-cat").style.display = 'block';
+            document.getElementById("list-price").style.display = 'none';
+
+        } else if (id=="select-brand") {
+            document.getElementById("select-brand").style.color = 'black';
+            document.getElementById("select-cat").style.color = '#6c757d99';
+            document.getElementById("select-price").style.color = '#6c757d99';
+
+            document.getElementById("list-brand").style.display = 'block';
+            document.getElementById("list-cat").style.display = 'none';
+            document.getElementById("list-cat").style.display = 'none';
+        } else{
+            document.getElementById("select-brand").style.color = '#6c757d99';
+            document.getElementById("select-cat").style.color = '#6c757d99';
+            document.getElementById("select-price").style.color = 'black';
+
+            document.getElementById("list-brand").style.display = 'none';
+            document.getElementById("list-cat").style.display = 'none';
+            document.getElementById("list-price").style.display = 'block';
+        }
+
+        }
+    </script>
+</body>
+
+</html>

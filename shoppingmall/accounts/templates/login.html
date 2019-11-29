@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+{% if user.is_authenticated %}
+<p>이미 로그인 되어있습니다</p>
+{% else %}
+<form method="POST" action="{% url 'login' %}" class="col-md-9 col-lg-8 mx-auto">
+    {% csrf_token %}
+    <h3 class="login-heading mb-4">Log in</h3>
+    <form>
+    <div class="form-label-group">
+        <label for="username">ID</label>
+        <input type="text" name="username" class="form-control" placeholder="ID" required autofocus>
+    </div>
+    <br>
+    <div class="form-label-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
+    </div>       
+    <br>
+    <input type="submit" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" value="Signup!">
+</form>
+
+{% endif %}
+{% endblock %}

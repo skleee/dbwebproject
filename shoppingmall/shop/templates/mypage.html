@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<br>
+<h1>My page</h1>
+<div class="card">
+    <div class="card-body">
+        <h2>개인정보</h2>
+        <p>사용자 아이디: {{user.username}}</p>
+        <p>구매자: {{user.buyer.is_buyer}} / 판매자: {{user.buyer.is_seller}}</p>
+        <p>주소: {{user.buyer.address}}</p>
+        <p>
+        구매내역:
+            {% for x in user.buyer.pids.all %}
+                {{x}} /
+            {% endfor %}
+        </p>
+    </div>
+</div>
+
+{% endblock %}

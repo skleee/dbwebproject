@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+
+<div class="card mt-4">
+    <img class="card-img-top img-fluid" src="{{ product.pimg.url }}" alt="">
+    <div class="card-body">
+    <h3 class="card-title">{{product.pname}}</h3>
+    <h4>\{{product.price}}</h4>
+    <h4>카테고리: {{product.category}}</h4>
+    <p class="card-text" style="margin:0;"> 
+        브랜드: {{product.brand}}<br>남은 재고: {{product.stock}}개<br>등록일자 {{product.pub_date}}
+    </p><br>
+    {% if user.is_authenticated %}
+    <button type="button" class="btn btn-primary btn-lg">장바구니</button>
+    <button type="button" class="btn btn-secondary btn-lg"><a href="{% url 'buy' %}">구매</a></button>
+    {% endif %}
+    </div>
+</div>
+
+<div class="card card-outline-secondary my-4">
+    <div class="card-header">
+    Product Reviews
+    </div>
+    <div class="card-body">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+    <hr>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+    <hr>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+    <hr>
+    <a href="#" class="btn btn-success">Leave a Review</a>
+    </div>
+</div>
+<!-- /.card -->
+
+{% endblock %}
