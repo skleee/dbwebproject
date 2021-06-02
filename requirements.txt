@@ -43,7 +43,7 @@ sqlparse==0.3.0
 sympy==1.4
 tablib==0.13.0
 typed-ast==1.1.0
-urllib3==1.24.3
+urllib3==1.26.5
 wincertstore==0.2
 wrapt==1.10.11
 xlrd==1.2.0
